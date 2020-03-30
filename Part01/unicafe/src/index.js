@@ -11,6 +11,9 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
+  const totalSum = good + neutral + bad;
+  const weighedTotal = good * 1 + neutral * 0 + bad * -1;
+
   return (
     <div>
       <h1>give feedback</h1>
@@ -24,6 +27,9 @@ const App = () => {
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
+      <p>all {totalSum}</p>
+      <p>average {totalSum === 0 ? 0 : weighedTotal / totalSum}</p>
+      <p>positive {totalSum === 0 ? 0 : (good / totalSum) * 100 + "%"}</p>
     </div>
   );
 };
