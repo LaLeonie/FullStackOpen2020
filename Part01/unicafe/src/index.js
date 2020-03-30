@@ -5,6 +5,15 @@ const Button = props => {
   return <button onClick={props.onClickEvent}>{props.text}</button>;
 };
 
+const Statistic = props => {
+  return (
+    <tr>
+      <td>{props.label}</td>
+      <td>{props.score}</td>
+    </tr>
+  );
+};
+
 const Statistics = ({ good, neutral, bad }) => {
   const totalSum = good + neutral + bad;
   const weighedTotal = good * 1 + neutral * 0 + bad * -1;
@@ -12,12 +21,22 @@ const Statistics = ({ good, neutral, bad }) => {
   return (
     <>
       <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>all {totalSum}</p>
-      <p>average {totalSum === 0 ? 0 : weighedTotal / totalSum}</p>
-      <p>positive {totalSum === 0 ? 0 : (good / totalSum) * 100 + "%"}</p>
+      <table>
+        <tbody>
+          <Statistic label="good" score={good} />
+          <Statistic label="neutral" score={neutral} />
+          <Statistic label="bad" score={bad} />
+          <Statistic label="all" score={totalSum} />
+          <Statistic
+            label="average"
+            score={totalSum === 0 ? 0 : weighedTotal / totalSum}
+          />
+          <Statistic
+            label="positive"
+            score={totalSum === 0 ? 0 : (good / totalSum) * 100 + "%"}
+          />
+        </tbody>
+      </table>
     </>
   );
 };
