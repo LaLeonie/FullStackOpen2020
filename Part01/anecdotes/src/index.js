@@ -13,6 +13,7 @@ const App = props => {
   );
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(votesArrOriginal);
+  const highestVote = Math.max(...votes);
 
   const randomSelect = () => {
     const max = quotesArrLength - 1;
@@ -27,9 +28,17 @@ const App = props => {
 
   return (
     <div>
+      <h1>Anecodte of the day</h1>
       <div>{props.anecdotes[selected]}</div>
+      <p>has {votes[selected]} votes</p>
       <Button onClickEvent={() => addVote(selected)} label="vote" />
       <Button onClickEvent={randomSelect} label="next anecdote" />
+      <h1>Anecodte with most votes</h1>
+      {votes.every(el => el === 0) ? (
+        <div>Not votes given yet</div>
+      ) : (
+        <div>{props.anecdotes[votes.indexOf(highestVote)]}</div>
+      )}
     </div>
   );
 };
