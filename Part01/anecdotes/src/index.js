@@ -6,17 +6,23 @@ const Button = props => {
 };
 
 const App = props => {
+  const quotesArrLength = anecdotes.length;
+  const votesArrOriginal = Array.apply(null, new Array(quotesArrLength)).map(
+    Number.prototype.valueOf,
+    0
+  );
   const [selected, setSelected] = useState(0);
-  const [votes, setVotes] = useState({ 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
+  const [votes, setVotes] = useState(votesArrOriginal);
 
   const randomSelect = () => {
-    const max = anecdotes.length - 1;
+    const max = quotesArrLength - 1;
     setSelected(Math.floor(Math.random() * max) + 0);
   };
 
   const addVote = num => {
-    console.log(votes);
-    setVotes({ ...votes, [num]: votes[num] + 1 });
+    const copy = [...votes];
+    copy[num] += 1;
+    setVotes(copy);
   };
 
   return (
