@@ -9,8 +9,15 @@ const App = () => {
     const newPerson = {
       name: newName
     };
-    setPersons(persons.concat(newPerson));
+    let equalName = persons.filter(p => p.name === newPerson.name);
+    console.log(equalName);
+    if (equalName.length > 0) {
+      window.alert(`${newPerson.name} is already added to phonebook`);
+    } else {
+      setPersons(persons.concat(newPerson));
+    }
     setNewName("");
+    equalName = [];
   };
 
   const handleInputChange = event => {
