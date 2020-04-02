@@ -18,6 +18,34 @@ const CountryComponent = props => {
   );
 };
 
+const ListComponent = ({ name, capital, population, languages, flag }) => {
+  const [infoDisplay, setInfoDisplay] = useState(false);
+
+  const toggleDisplay = event => {
+    setInfoDisplay(!infoDisplay);
+  };
+
+  return infoDisplay ? (
+    <div>
+      <button onClick={toggleDisplay}>{infoDisplay ? "hide" : "show"}</button>
+      <CountryComponent
+        name={name}
+        capital={capital}
+        population={population}
+        languages={languages}
+        flag={flag}
+      />
+    </div>
+  ) : (
+    <div>
+      <p>
+        {name}{" "}
+        <button onClick={toggleDisplay}>{infoDisplay ? "hide" : "show"}</button>
+      </p>
+    </div>
+  );
+};
+
 const App = () => {
   const [countries, setCountries] = useState([]);
   const [filter, setFilter] = useState("");
@@ -48,7 +76,16 @@ const App = () => {
         flag={filteredList[0].flag}
       />
     ) : (
-      filteredList.map(c => <div key={c.name}>{c.name}</div>)
+      filteredList.map(c => (
+        <ListComponent
+          key={c.name}
+          name={c.name}
+          capital={c.capital}
+          population={c.population}
+          languages={c.languages}
+          flag={c.flag}
+        />
+      ))
     );
 
   return (
