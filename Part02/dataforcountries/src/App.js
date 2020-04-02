@@ -1,50 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-const CountryComponent = props => {
-  return (
-    <div>
-      <h1>{props.name}</h1>
-      <p>capital {props.capital}</p>
-      <p>population {props.population}</p>
-      <h2>languages</h2>
-      <ul>
-        {props.languages.map(lang => (
-          <li key={lang.name}>{lang.name}</li>
-        ))}
-      </ul>
-      <img src={props.flag} alt={`${props.name} flag`} />
-    </div>
-  );
-};
-
-const ListComponent = ({ name, capital, population, languages, flag }) => {
-  const [infoDisplay, setInfoDisplay] = useState(false);
-
-  const toggleDisplay = event => {
-    setInfoDisplay(!infoDisplay);
-  };
-
-  return infoDisplay ? (
-    <div>
-      <button onClick={toggleDisplay}>{infoDisplay ? "hide" : "show"}</button>
-      <CountryComponent
-        name={name}
-        capital={capital}
-        population={population}
-        languages={languages}
-        flag={flag}
-      />
-    </div>
-  ) : (
-    <div>
-      <p>
-        {name}{" "}
-        <button onClick={toggleDisplay}>{infoDisplay ? "hide" : "show"}</button>
-      </p>
-    </div>
-  );
-};
+import CountryComponent from "./components/CountryComponent";
+import ListComponent from "./components/ListComponent";
 
 const App = () => {
   const [countries, setCountries] = useState([]);
