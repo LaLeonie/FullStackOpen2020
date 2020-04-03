@@ -37,6 +37,17 @@ const App = () => {
         });
   };
 
+  const onButtonClick = (name, id) => {
+    personService.deletePerson(id).then(data => {
+      const answer = window.confirm(`Delete ${name}?`);
+      if (answer) {
+        setPersons(persons.filter(p => p.id !== id));
+      } else {
+        setPersons(persons);
+      }
+    });
+  };
+
   const handleNameChange = event => {
     setNewName(event.target.value);
   };
@@ -71,7 +82,7 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Persons list={personsToShow} />
+      <Persons list={personsToShow} onButtonClick={onButtonClick} />
     </div>
   );
 };
