@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+// import axios from "axios";
+import personService from "./services/persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import axios from "axios";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,8 +12,9 @@ const App = () => {
   const [newFilter, setnewFilter] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then(response => {
-      setPersons(response.data);
+    console.log(personService.getAll());
+    personService.getAll().then(data => {
+      setPersons(data);
     });
   }, []);
 
@@ -27,11 +29,12 @@ const App = () => {
     );
     equalName.length > 0
       ? window.alert(`${newPerson.name} is already added to phonebook`)
-      : setPersons(persons.concat(newPerson));
-
-    setNewNumber("");
-    setNewName("");
-    equalName = [];
+      : personService.create(newPerson).then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson));
+          setNewNumber("");
+          setNewName("");
+          equalName = [];
+        });
   };
 
   const handleNameChange = event => {
@@ -58,7 +61,7 @@ const App = () => {
       <h1>Phonebook</h1>
       <Filter newFilter={newFilter} onInputChange={handleFilterChange} />
 
-      <h2>Add a new persone</h2>
+      <h2>Add a new person</h2>
       <PersonForm
         onSubmitChange={addPerson}
         nameValue={newName}
