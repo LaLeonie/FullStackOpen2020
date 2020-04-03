@@ -11,27 +11,28 @@ const App = () => {
   const [newFilter, setnewFilter] = useState("");
 
   useEffect(() => {
-    console.log(personService.getAll());
     personService.getAll().then(data => {
       setPersons(data);
     });
   }, []);
 
+  const resetInputFields = () => {
+    setNewNumber("");
+    setNewName("");
+  };
+
   const updatePerson = (oldPerson, newPerson, arr) => {
+    console.log(arr);
     const answer = window.confirm(
       `${oldPerson.name} is already added to phonebook, replace the older number with a new one?`
     );
     if (answer) {
       personService.update(oldPerson.id, newPerson).then(response => {
         setPersons(persons.map(p => (p.id !== oldPerson.id ? p : response)));
-        setNewNumber("");
-        setNewName("");
-        arr = [];
+        resetInputFields();
       });
     } else {
-      setNewNumber("");
-      setNewName("");
-      arr = [];
+      resetInputFields();
     }
   };
 
@@ -47,11 +48,10 @@ const App = () => {
     );
 
     equalName.length > 0
-      ? updatePerson(equalName[0], newPerson, equalName)
+      ? updatePerson(equalName[0], newPerson)
       : personService.create(newPerson).then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
-          setNewNumber("");
-          setNewName("");
+          resetInputFields();
         });
   };
 
