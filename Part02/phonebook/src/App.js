@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-// import axios from "axios";
 import personService from "./services/persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
@@ -18,22 +17,41 @@ const App = () => {
     });
   }, []);
 
+  const updatePerson = (oldPerson, newPerson, arr) => {
+    const answer = window.confirm(
+      `${oldPerson.name} is already added to phonebook, replace the older number with a new one?`
+    );
+    if (answer) {
+      personService.update(oldPerson.id, newPerson).then(response => {
+        setPersons(persons.map(p => (p.id !== oldPerson.id ? p : response)));
+        setNewNumber("");
+        setNewName("");
+        arr = [];
+      });
+    } else {
+      setNewNumber("");
+      setNewName("");
+      arr = [];
+    }
+  };
+
   const addPerson = event => {
     event.preventDefault();
     const newPerson = {
       name: newName,
       number: newNumber
     };
+
     let equalName = persons.filter(
       p => p.name.toLowerCase() === newPerson.name.toLowerCase()
     );
+
     equalName.length > 0
-      ? window.alert(`${newPerson.name} is already added to phonebook`)
+      ? updatePerson(equalName[0], newPerson, equalName)
       : personService.create(newPerson).then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
           setNewNumber("");
           setNewName("");
-          equalName = [];
         });
   };
 
