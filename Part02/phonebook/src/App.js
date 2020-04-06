@@ -3,14 +3,14 @@ import personService from "./services/persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import SuccessNotification from "./components/SuccessNotification";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setnewFilter] = useState("");
-  const [successNotification, setSuccessNotification] = useState(null);
+  const [newNotification, setNotification] = useState(null);
 
   useEffect(() => {
     personService.getAll().then(data => {
@@ -23,10 +23,10 @@ const App = () => {
     setNewName("");
   };
 
-  const displaySuccessMessage = message => {
-    setSuccessNotification(message);
+  const displayMessage = (message, type) => {
+    setNotification({ message, type });
     setTimeout(() => {
-      setSuccessNotification(null);
+      setNotification(null);
     }, 5000);
   };
 
@@ -38,7 +38,7 @@ const App = () => {
       personService.update(oldPerson.id, newPerson).then(response => {
         setPersons(persons.map(p => (p.id !== oldPerson.id ? p : response)));
         resetInputFields();
-        displaySuccessMessage(`Number for ${oldPerson.name} was changed`);
+        displayMessage(`Number for ${oldPerson.name} was changed`, "success");
       });
     } else {
       resetInputFields();
@@ -61,21 +61,28 @@ const App = () => {
       : personService.create(newPerson).then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
           resetInputFields();
-          displaySuccessMessage(
-            `${returnedPerson.name} was added to the Phonebook`
+          displayMessage(
+            `${returnedPerson.name} was added to the Phonebook`,
+            "success"
           );
         });
   };
 
   const onButtonClick = (name, id) => {
-    personService.deletePerson(id).then(data => {
-      const answer = window.confirm(`Delete ${name}?`);
-      if (answer) {
-        setPersons(persons.filter(p => p.id !== id));
-      } else {
-        setPersons(persons);
-      }
-    });
+    personService
+      .deletePerson(id)
+      .then(data => {
+        const answer = window.confirm(`Delete ${name}?`);
+        if (answer) {
+          setPersons(persons.filter(p => p.id !== id));
+          displayMessage(`${name} has been deleted`, "success");
+        } else {
+          setPersons(persons);
+        }
+      })
+      .catch(error => {
+        displayMessage(`${name} has already been deleted`, "fail");
+      });
   };
 
   const handleNameChange = event => {
@@ -100,7 +107,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <SuccessNotification message={successNotification} />
+      <Notification notificationObject={newNotification} />
       <Filter newFilter={newFilter} onInputChange={handleFilterChange} />
 
       <h2>Add a new person</h2>
