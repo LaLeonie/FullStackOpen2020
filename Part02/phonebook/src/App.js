@@ -13,9 +13,12 @@ const App = () => {
   const [newNotification, setNotification] = useState(null);
 
   useEffect(() => {
-    personService.getAll().then(data => {
-      setPersons(data);
-    });
+    personService
+      .getAll()
+      .then(data => {
+        setPersons(data);
+      })
+      .catch(error => displayMessage("there has been an error", "error"));
   }, []);
 
   const resetInputFields = () => {
@@ -81,7 +84,7 @@ const App = () => {
         }
       })
       .catch(error => {
-        displayMessage(`${name} has already been deleted`, "fail");
+        displayMessage(`${name} has already been deleted`, "error");
       });
   };
 
