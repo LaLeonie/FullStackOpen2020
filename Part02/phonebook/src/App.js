@@ -3,12 +3,14 @@ import personService from "./services/persons";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import SuccessNotification from "./components/SuccessNotification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [newFilter, setnewFilter] = useState("");
+  const [successNotification, setSuccessNotification] = useState(null);
 
   useEffect(() => {
     personService.getAll().then(data => {
@@ -21,8 +23,14 @@ const App = () => {
     setNewName("");
   };
 
-  const updatePerson = (oldPerson, newPerson, arr) => {
-    console.log(arr);
+  const displaySuccessMessage = message => {
+    setSuccessNotification(message);
+    setTimeout(() => {
+      setSuccessNotification(null);
+    }, 5000);
+  };
+
+  const updatePerson = (oldPerson, newPerson) => {
     const answer = window.confirm(
       `${oldPerson.name} is already added to phonebook, replace the older number with a new one?`
     );
@@ -30,6 +38,7 @@ const App = () => {
       personService.update(oldPerson.id, newPerson).then(response => {
         setPersons(persons.map(p => (p.id !== oldPerson.id ? p : response)));
         resetInputFields();
+        displaySuccessMessage(`Number for ${oldPerson.name} was changed`);
       });
     } else {
       resetInputFields();
@@ -52,6 +61,9 @@ const App = () => {
       : personService.create(newPerson).then(returnedPerson => {
           setPersons(persons.concat(returnedPerson));
           resetInputFields();
+          displaySuccessMessage(
+            `${returnedPerson.name} was added to the Phonebook`
+          );
         });
   };
 
@@ -88,6 +100,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <SuccessNotification message={successNotification} />
       <Filter newFilter={newFilter} onInputChange={handleFilterChange} />
 
       <h2>Add a new person</h2>
