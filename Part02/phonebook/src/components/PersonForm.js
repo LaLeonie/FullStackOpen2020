@@ -1,6 +1,6 @@
 import React from "react";
 
-const PersonForm = props => (
+const PersonForm = (props) => (
   <form onSubmit={props.onSubmitChange}>
     <div>
       name: <input value={props.nameValue} onChange={props.onNameChange} />{" "}
