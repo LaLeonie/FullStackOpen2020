@@ -1,0 +1,21 @@
+[submodule "Part4/backend"]
+	path = Part4/backend
+	url = https://github.com/LaLeonie/FullStackOpen_Part4.git
+[submodule "Part4/frontend"]
+	path = Part4/frontend
+	url = https://github.com/LaLeonie/FSO_Part4_Frontend.git
+[submodule "Part6/Anecdotes"]
+	path = Part6/Anecdotes
+	url = https://github.com/LaLeonie/FSO_Part6_Anecdotes.git
+[submodule "Part6/Unicafe"]
+	path = Part6/Unicafe
+	url = https://github.com/LaLeonie/FSO_Part6_Unicafe.git
+[submodule "Part7"]
+	path = Part7
+	url = https://github.com/LaLeonie/FSO_Part7.git
+[submodule "Part8"]
+	path = Part8
+	url = https://github.com/LaLeonie/FSO_Part8.git
+[submodule "Part9"]
+	path = Part9
+	url = https://github.com/LaLeonie/FSO_Part9.git
